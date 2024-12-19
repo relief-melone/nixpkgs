@@ -22,7 +22,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitLab {
     owner = "asus-linux";
     repo = "asusctl";
-    rev = version;
+    rev = "wip/g16-slash";
     hash = "sha256-fod3ZkJktmJGHF8nSSp9lVMg/qYKQd4EiauFGTSvbsg=";
   };
 
@@ -38,7 +38,6 @@ rustPlatform.buildRustPackage rec {
     files="
       asusd-user/src/config.rs
       asusd-user/src/daemon.rs
-      asusd/src/ctrl_anime/config.rs
       rog-aura/src/aura_detection.rs
       rog-control-center/src/lib.rs
       rog-control-center/src/main.rs
@@ -48,7 +47,7 @@ rustPlatform.buildRustPackage rec {
       substituteInPlace $file --replace /usr/share $out/share
     done
 
-    substituteInPlace data/asusd.rules --replace systemctl ${systemd}/bin/systemctl
+    substituteInPlace data/asusd.rules --replace-warn systemctl ${systemd}/bin/systemctl
     substituteInPlace data/asusd.service \
       --replace /usr/bin/asusd $out/bin/asusd \
       --replace /bin/sleep ${coreutils}/bin/sleep
