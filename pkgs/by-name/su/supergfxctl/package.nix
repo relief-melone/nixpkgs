@@ -14,7 +14,7 @@ rustPlatform.buildRustPackage rec {
     owner = "asus-linux";
     repo = "supergfxctl";
     rev = version;
-    hash = "sha256-ie5JPHBvypUtPStwA/aO4GeQ/qbHTzUJF3T4QuW6JNc=";
+    # hash = "sha256-ie5JPHBvypUtPStwA/aO4GeQ/qbHTzUJF3T4QuW6JNc=";
   };
 
   cargoHash = "sha256-qZC4axeRnKgUNGDFzmdvN/mwkcqsh8KwLlM6oGT19e8=";
