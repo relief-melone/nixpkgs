@@ -27,7 +27,6 @@ let
     npmInstallFlags = [ "--legacy-peer-deps" "--omit=dev" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" ];
     dontNpmBuild = true;
-    dontNpmInstall = true;
     makeCacheWritable = true;
 
     nativeBuildInputs = with pkgs; [
@@ -45,6 +44,10 @@ let
     ];
 
     NODE_OPTIONS = "--openssl-legacy-provider";
+
+    installPhase = ''
+      ls
+    '';
   });
 
   def = import ./dependencies/default.nix;
