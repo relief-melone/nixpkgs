@@ -27,8 +27,9 @@ let
 
     installPhase = ''
       mkdir $out
-      cp -r ${srcOriginal}/* $out
-      cp ./package.json ./package-lock.json $out
+      cp -r ${srcOriginal}/* $out/
+      cp ./package.json $out/
+      cp ./package-lock.json $out/
     '';
   };
   nodePackage = buildNpmPackage (finalAttrs: {
