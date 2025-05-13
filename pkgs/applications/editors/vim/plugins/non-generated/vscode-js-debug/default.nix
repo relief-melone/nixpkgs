@@ -83,7 +83,7 @@ let
 
 in
 vimUtils.buildVimPlugin {
-  inherit nodePackage
+  inherit nodePackage;
 
   src = nodePackage;
 
