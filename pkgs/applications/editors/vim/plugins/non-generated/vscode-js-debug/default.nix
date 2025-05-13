@@ -49,6 +49,7 @@ let
 
     buildPhase = ''
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package.json
+      jq '.scripts' package.json
     '';
   });
 
