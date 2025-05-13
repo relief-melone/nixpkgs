@@ -28,7 +28,6 @@ let
     pname = "vscode-js-debug";
     version = "v1.100.0";
 
-    npmDepsHash = "sha256-4SweyCohiTAMhGFwqmtQtmyic3/34azMTou6vpM2Bqo=";
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--omit=dev" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
