@@ -26,6 +26,7 @@ let
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--omit=dev" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" ];
+    dontNpmBuild = true;
     makeCacheWritable = true;
 
     nativeBuildInputs = with pkgs; [
