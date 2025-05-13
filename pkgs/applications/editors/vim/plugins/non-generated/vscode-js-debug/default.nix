@@ -47,7 +47,7 @@ let
     NODE_OPTIONS = "--openssl-legacy-provider";
 
     buildPhase = ''
-      jq 'del(.scripts.prepare | scripts.postinstall') package.json > package.json
+      jq 'dels(.scripts.prepare) | del(.scripts.postinstall') package.json > package.json
     '';
 
     installPhase = ''
