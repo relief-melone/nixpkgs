@@ -21,15 +21,15 @@ let
     };
 
     outputHash = lib.fakeHash;
-    buildInputs = [ pkgs.jq ];
+    buildInputs = with pkgs; [ jq nodejs];
 
     installPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += { "picomatch": "^4.02.", "@esbuild/linux-x64-glibc": "^0.49.1" }' > package-temp.json
+      jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64-glibc": "^0.49.1" }' > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
-      jq 'del(.scripts.prepare) | del(scripts.postinstall)' package.json > package-temp.json
+      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
       mv package-temp.json > package.json
 
       npm i --package-lock-only
