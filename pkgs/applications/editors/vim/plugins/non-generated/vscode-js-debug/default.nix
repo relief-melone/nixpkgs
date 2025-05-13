@@ -17,6 +17,7 @@ let
   };
 
   srcPatched = pkgs.stdenv.mkDerivation {
+    name = "vscode-js-debug-patched";
     src = fetchFromGitHub {
       owner = "relief-melone";
       repo = "vscode-js-debug-nixpkgs-depencencies";
