@@ -9,7 +9,7 @@
 let
 
   nodejs = nodejs_20;
-  srcOriginal = fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "microsoft";
     repo = "vscode-js-debug";
     rev = "v1.100.0";
@@ -28,14 +28,14 @@ let
     installPhase = ''
       mkdir $out
       mkdir $out/src
-      cp -r ${srcOriginal}/src $out/src
+      cp -r ${src}/src $out/src
 
       cp ./package.json $out/
       cp ./package-lock.json $out/
     '';
   };
   nodePackage = buildNpmPackage (finalAttrs: {
-    src = srcPatched;
+    inherit src;
 
     pname = "vscode-js-debug";
     version = "v1.100.0";
@@ -65,6 +65,14 @@ let
 
     NODE_OPTIONS = "--openssl-legacy-provider";
 
+    postInstall = ''
+      echo "Folder contents"
+      ls
+
+      echo "node_modules content"
+      ls node_modules
+    '';
+
 
   });
 
@@ -75,8 +83,9 @@ let
 
 in
 vimUtils.buildVimPlugin {
-  inherit nodePackage;
-  src = srcPatched;
+  inherit nodePackage
+
+  src = nodePackage;
 
   pname = "vscode-js-debug";
   version = "v1.100.0";
