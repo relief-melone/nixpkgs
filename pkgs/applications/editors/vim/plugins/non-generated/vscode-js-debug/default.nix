@@ -32,6 +32,7 @@ let
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
       mv package-temp.json package.json
 
+      cat package.json
       npm i --package-lock-only
     '';
   };
