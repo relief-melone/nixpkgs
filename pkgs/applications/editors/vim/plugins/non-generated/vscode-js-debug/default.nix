@@ -16,8 +16,30 @@ let
     sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
   };
 
-  nodePackage = buildNpmPackage (finalAttrs: {
+  modifiedSrc = pkgs.stdenv.mkDerivation {
     inherit src;
+    nativeBuildInputs = with pkgs;[
+      jq
+    ];
+    buildPhase = ''
+      echo "Running modifications on package.json scripts"
+      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > tmp-package.json
+      mv tmp-package.json package.json
+
+      jq '.dependencies += { "merge2": "^1.4.1", "vsce":"^2.7.0", "@dprint/linux-x64-glibc": "^0.49.1", "@esbuild/linux-x64": "0.25.4" }' package.json > tmp-package.json
+      mv tmp-package.json package.json
+
+      cp -r ./* $buildPhase/copy
+    '';
+
+    installPhase = ''
+      mkdir $out;
+      cp -r $buildPhase $out
+    '';
+  };
+
+  nodePackage = buildNpmPackage (finalAttrs: {
+    src = modifiedSrc;
 
     pname = "vscode-js-debug";
     version = "v1.100.0";
@@ -47,14 +69,6 @@ let
 
     NODE_OPTIONS = "--openssl-legacy-provider";
 
-    patchPhase = ''
-      echo "Running modifications on package.json scripts"
-      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > tmp-package.json
-      mv tmp-package.json package.json
-
-      jq '.dependencies += { "merge2": "^1.4.1", "vsce":"^2.7.0", "@dprint/linux-x64-glibc": "^0.49.1", "@esbuild/linux-x64": "0.25.4" }' package.json > tmp-package.json
-      mv tmp-package.json package.json
-    '';
 
   });
 
