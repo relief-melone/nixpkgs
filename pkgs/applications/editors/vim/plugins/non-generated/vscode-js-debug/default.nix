@@ -34,6 +34,7 @@ let
       libsecret
       gcc
       node-gyp
+      jq
     ];
 
     buildInputs = with pkgs; [
