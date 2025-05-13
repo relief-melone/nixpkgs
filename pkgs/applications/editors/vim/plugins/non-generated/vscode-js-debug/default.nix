@@ -26,7 +26,7 @@ let
 
     buildInputs = with pkgs; [ jq nodejs];
 
-    installPhase = ''
+    buildPhase = ''
       echo "adding dependencies"
       jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64-glibc": "^0.49.1" }' package.json > package-temp.json
       mv package-temp.json package.json
