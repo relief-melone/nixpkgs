@@ -18,6 +18,8 @@ let
 
   modifiedSrc = pkgs.stdenv.mkDerivation {
     inherit src;
+    name = "vscode-js-debug-mod";
+
     nativeBuildInputs = with pkgs;[
       jq
     ];
