@@ -4,36 +4,38 @@
   buildNpmPackage,
   fetchFromGitHub,
   vimUtils,
+  lib,
   system
 }:
 let
 
   nodejs = nodejs_20;
-  src = fetchFromGitHub {
-    owner = "microsoft";
-    repo = "vscode-js-debug";
-    rev = "v1.100.0";
-    sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
-  };
 
-  srcPatched = pkgs.stdenv.mkDerivation {
+  src = pkgs.stdenv.mkDerivation {
     name = "vscode-js-debug-patched";
     src = fetchFromGitHub {
-      owner = "relief-melone";
-      repo = "vscode-js-debug-nixpkgs-depencencies";
+      owner = "microsoft";
+      repo = "vscode-js-debug";
       rev = "v1.100.0";
-      sha256 = "sha256-dxpI+Wkx4cb45PGB1LgfFxJXmnXeRN/GLtUEfxh02TA=";
+      sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
     };
 
-    installPhase = ''
-      mkdir $out
-      mkdir $out/src
-      cp -r ${src}/src $out/src
+    outputHash = lib.fakeSha256;
+    buildInputs = [ pkgs.jq ];
 
-      cp ./package.json $out/
-      cp ./package-lock.json $out/
+    installPhase = ''
+      echo "adding dependencies"
+      jq '.dependencies += { "picomatch": "^4.02.", "@esbuild/linux-x64-glibc": "^0.49.1" }' > package-temp.json
+      mv package-temp.json package.json
+
+      echo "removing scripts"
+      jq 'del(.scripts.prepare) | del(scripts.postinstall)' package.json > package-temp.json
+      mv package-temp.json > package.json
+
+      npm i --package-lock-only
     '';
   };
+
   nodePackage = buildNpmPackage (finalAttrs: {
     inherit src;
 
@@ -43,7 +45,6 @@ let
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
-    npmDepsHash = "sha256-E8R7YjzWTsjGisNQUfahTmw/9M1xVFTsPkc7TpVt8nM=";
     dontNpmBuild = true;
     makeCacheWritable = true;
 
