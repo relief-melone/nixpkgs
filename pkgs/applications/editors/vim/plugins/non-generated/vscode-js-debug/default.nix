@@ -41,12 +41,17 @@ let
       libsecret
       gcc
       node-gyp
+      yq
     ];
 
     NODE_OPTIONS = "--openssl-legacy-provider";
 
     installPhase = ''
-      ls
+      echo "PACKAGE.JSON"
+      cat package.json
+
+      echo "node_modules..."
+      ls ./node_modules
     '';
   });
 
