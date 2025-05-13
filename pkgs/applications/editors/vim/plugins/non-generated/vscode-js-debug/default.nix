@@ -9,18 +9,24 @@
 let
 
   nodejs = nodejs_20;
-  src = fetchFromGitHub {
+  srcOriginal = fetchFromGitHub {
     owner = "microsoft";
     repo = "vscode-js-debug";
     rev = "v1.100.0";
     sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
   };
 
-  srcMod = fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "relief-melone";
     repo = "vscode-js-debug-nixpkgs-depencencies";
     rev = "v1.100.0";
     sha256 = "sha256-dxpI+Wkx4cb45PGB1LgfFxJXmnXeRN/GLtUEfxh02TA=";
+
+    installPhase = ''
+      mkdir $out
+      cp ${srcOriginal}/* $out
+      cp ./package.json ./package-lock.json $out
+    '';
   };
   nodePackage = buildNpmPackage (finalAttrs: {
     inherit src;
@@ -51,11 +57,6 @@ let
       jq
     ];
 
-    prePatch = ''
-      cp ${srcMod}/package.json .
-      cp ${srcMod}/package-lock.json .
-    '';
-
     NODE_OPTIONS = "--openssl-legacy-provider";
 
 
@@ -75,11 +76,6 @@ vimUtils.buildVimPlugin {
   version = "v1.100.0";
 
   nativeBuildInputs = [ nodejs ];
-
-  prePatch = ''
-    cp ${srcMod}/package.json .
-    cp ${srcMod}/package-lock.json .
-  '';
 
   buildPhase = ''
     ln -s ${nodePackage}/lib/node_modules ./node_modules
