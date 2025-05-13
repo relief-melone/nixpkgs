@@ -16,32 +16,14 @@ let
     sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
   };
 
-  modifiedSrc = pkgs.stdenv.mkDerivation {
-    inherit src;
-    name = "vscode-js-debug-mod";
-
-    nativeBuildInputs = with pkgs;[
-      jq
-      nodejs
-    ];
-
-    installPhase = ''
-      echo "Running modifications on package.json scripts"
-      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > tmp-package.json
-      mv tmp-package.json package.json
-
-      #echo "Adding packages..."
-      #jq '.dependencies += { "merge2": "^1.4.1", "vsce":"^2.7.0", "@dprint/linux-x64-glibc": "^0.49.1", "@esbuild/linux-x64": "0.25.4" }' package.json > tmp-package.json
-      #mv tmp-package.json package.json
-
-
-      mkdir $out
-      cp -r ./* $out
-    '';
+  srcMod = fetchFromGitHub {
+    owner = "relief-melone";
+    repo = "vscode-js-debug-nixpkgs-depencencies";
+    rev = "v1.100.0";
+    sha256 = "sha256-dxpI+Wkx4cb45PGB1LgfFxJXmnXeRN/GLtUEfxh02TA=";
   };
-
   nodePackage = buildNpmPackage (finalAttrs: {
-    src = modifiedSrc;
+    inherit src;
 
     pname = "vscode-js-debug";
     version = "v1.100.0";
@@ -68,6 +50,11 @@ let
       node-gyp
       jq
     ];
+
+    prePatch = ''
+      cp ${srcMod}/package.json .
+      cp ${srcMod}/package-lock.json .
+    '';
 
     NODE_OPTIONS = "--openssl-legacy-provider";
 
