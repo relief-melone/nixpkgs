@@ -50,25 +50,17 @@ let
     buildPhase = ''
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package.json
     '';
-
-    installPhase = ''
-      echo "PACKAGE.JSON"
-      cat package.json
-
-      echo "node_modules..."
-      ls ./node_modules
-    '';
   });
 
-  def = import ./dependencies/default.nix;
+  # def = import ./dependencies/default.nix;
 
-  nodePkgs = def { inherit system nodejs pkgs; };
-  nodeDependencies = ( nodePkgs // { }).nodeDependencies;
+  # nodePkgs = def { inherit system nodejs pkgs; };
+  # nodeDependencies = ( nodePkgs // { }).nodeDependencies;
 
 in
 vimUtils.buildVimPlugin {
   inherit src;
-  inherit nodeDependencies;
+  # inherit nodeDependencies;
 
   pname = "vscode-js-debug";
   version = "v1.100.0";
