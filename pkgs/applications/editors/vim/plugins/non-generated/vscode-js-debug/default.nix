@@ -20,7 +20,7 @@ let
       sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
     };
 
-    outputHash = lib.fakeSha256;
+    outputHash = lib.fakeHash;
     buildInputs = [ pkgs.jq ];
 
     installPhase = ''
