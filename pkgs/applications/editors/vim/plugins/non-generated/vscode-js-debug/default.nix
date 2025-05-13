@@ -16,11 +16,13 @@ let
     sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
   };
 
-  src = fetchFromGitHub {
-    owner = "relief-melone";
-    repo = "vscode-js-debug-nixpkgs-depencencies";
-    rev = "v1.100.0";
-    sha256 = "sha256-dxpI+Wkx4cb45PGB1LgfFxJXmnXeRN/GLtUEfxh02TA=";
+  srcPatched = pkgs.stdenv.mkDerivation {
+    src = fetchFromGitHub {
+      owner = "relief-melone";
+      repo = "vscode-js-debug-nixpkgs-depencencies";
+      rev = "v1.100.0";
+      sha256 = "sha256-dxpI+Wkx4cb45PGB1LgfFxJXmnXeRN/GLtUEfxh02TA=";
+    };
 
     installPhase = ''
       mkdir $out
@@ -29,7 +31,7 @@ let
     '';
   };
   nodePackage = buildNpmPackage (finalAttrs: {
-    inherit src;
+    src = srcPatched;
 
     pname = "vscode-js-debug";
     version = "v1.100.0";
@@ -69,8 +71,8 @@ let
 
 in
 vimUtils.buildVimPlugin {
-  inherit src nodePackage;
-  # inherit nodeDependencies;
+  inherit nodePackage;
+  src = srcPatched;
 
   pname = "vscode-js-debug";
   version = "v1.100.0";
