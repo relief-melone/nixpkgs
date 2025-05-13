@@ -22,6 +22,7 @@ let
 
     nativeBuildInputs = with pkgs;[
       jq
+      nodejs
     ];
 
     installPhase = ''
