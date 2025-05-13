@@ -30,7 +30,7 @@ let
 
       echo "removing scripts"
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
-      mv package-temp.json > package.json
+      mv package-temp.json package.json
 
       npm i --package-lock-only
     '';
