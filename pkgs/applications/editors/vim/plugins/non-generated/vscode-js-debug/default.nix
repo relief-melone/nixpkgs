@@ -24,7 +24,7 @@ let
 
     npmDepsHash = "sha256-4SweyCohiTAMhGFwqmtQtmyic3/34azMTou6vpM2Bqo=";
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
-    npmInstallFlags = [ "--legacy-peer-deps" "--production" ];
+    npmInstallFlags = [ "--legacy-peer-deps" "--omit=dev" ];
     makeCacheWritable = true;
 
     nativeBuildInputs = with pkgs; [
