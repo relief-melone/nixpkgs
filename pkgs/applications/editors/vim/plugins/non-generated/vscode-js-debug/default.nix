@@ -76,6 +76,11 @@ vimUtils.buildVimPlugin {
 
   nativeBuildInputs = [ nodejs ];
 
+  prePatch = ''
+    cp ${srcMod}/package.json .
+    cp ${srcMod}/package-lock.json .
+  '';
+
   buildPhase = ''
     ln -s ${nodePackage}/lib/node_modules ./node_modules
 
