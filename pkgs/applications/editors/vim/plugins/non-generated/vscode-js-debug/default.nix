@@ -89,6 +89,9 @@ vimUtils.buildVimPlugin {
     export PATH="${nodePackage}/bin:$PATH"
     export XDG_CACHE_HOME=$(pwd)/node-gyp-cache
 
+    ls ./node_modules
+    cat ./package.json
+
     npx gulp dapDebugServer
 
     mv ./dist out
