@@ -31,7 +31,8 @@ let
       jq '.dependencies += { "merge2": "^1.4.1", "vsce":"^2.7.0", "@dprint/linux-x64-glibc": "^0.49.1", "@esbuild/linux-x64": "0.25.4" }' package.json > tmp-package.json
       mv tmp-package.json package.json
 
-      cp -r ./* $buildPhase/copy
+      mkdir $buildPhase
+      cp -r ./* $buildPhase/
     '';
 
     installPhase = ''
