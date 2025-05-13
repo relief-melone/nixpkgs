@@ -30,7 +30,7 @@ let
       mkdir $out/src
       cp -r ${srcOriginal}/src $out/src
 
-      cp ./package.json
+      cp ./package.json $out/
       cp ./package-lock.json $out/
     '';
   };
