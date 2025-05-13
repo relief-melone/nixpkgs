@@ -51,6 +51,8 @@ let
       echo "Running modifications on package.json scripts"
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package.json
       jq '.scripts' package.json
+
+      exit 1
     '';
   });
 
