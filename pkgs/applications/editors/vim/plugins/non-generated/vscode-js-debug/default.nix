@@ -68,7 +68,7 @@ let
 
 in
 vimUtils.buildVimPlugin {
-  inherit src;
+  inherit src nodePackage;
   # inherit nodeDependencies;
 
   pname = "vscode-js-debug";
