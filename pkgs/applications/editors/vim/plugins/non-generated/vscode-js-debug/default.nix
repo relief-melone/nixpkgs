@@ -49,8 +49,8 @@ let
 
     buildPhase = ''
       echo "Running modifications on package.json scripts"
-      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package.json
       cat package.json
+      jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package.json
 
       exit 1
     '';
