@@ -27,8 +27,10 @@ let
 
     installPhase = ''
       mkdir $out
-      cp -r ${srcOriginal}/* $out/
-      cp ./package.json $out/
+      mkdir $out/src
+      cp -r ${srcOriginal}/src $out/src
+
+      cp ./package.json
       cp ./package-lock.json $out/
     '';
   };
