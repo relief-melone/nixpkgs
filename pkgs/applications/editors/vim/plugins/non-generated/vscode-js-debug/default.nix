@@ -48,8 +48,6 @@ let
 
       mkdir $out
       cp -r ./package.json ./package-lock.json $out/
-      cp -r ./node_modules $out/
-      cp -
     '';
   };
 
