@@ -45,6 +45,9 @@ let
       cat package.json
 
       npm i --package-lock-only
+
+      mkdir $out
+      cp -r ./* $out/
     '';
   };
 
