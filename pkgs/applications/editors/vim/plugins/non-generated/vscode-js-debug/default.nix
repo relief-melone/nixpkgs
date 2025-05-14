@@ -20,6 +20,7 @@ let
       sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
     };
 
+    outputHashMode = "recursive";
     outputHashAlgo = "sha256";
     outputHash = lib.fakeSha256;
     makeCacheWritable = true;
