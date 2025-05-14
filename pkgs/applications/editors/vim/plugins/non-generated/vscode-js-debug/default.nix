@@ -11,14 +11,17 @@ let
 
   nodejs = nodejs_20;
 
-  src = pkgs.stdenv.mkDerivation {
+  srcOriginal = fetchFromGitHub {
+    owner = "microsoft";
+    repo = "vscode-js-debug";
+    rev = "v1.100.0";
+    sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
+  };
+
+
+  patch = pkgs.stdenv.mkDerivation {
     name = "vscode-js-debug-patched";
-    src = fetchFromGitHub {
-      owner = "microsoft";
-      repo = "vscode-js-debug";
-      rev = "v1.100.0";
-      sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
-    };
+    src = srcOriginal;
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
@@ -32,7 +35,7 @@ let
       export npm_config_cache=$TMPDIR/.npm
 
       echo "adding dependencies"
-      jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64": "0.25.3" }' package.json > package-temp.json
+      jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64": "0.25.3", "@dprinrt/linux-x64-glibc": "0.49.1", "vsce": "2.7.0", "merge2": "1.4.1" }' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
@@ -45,11 +48,13 @@ let
 
       mkdir $out
       cp -r ./package.json ./package-lock.json $out/
+      cp -r ./node_modules $out/
+      cp -
     '';
   };
 
   nodePackage = buildNpmPackage (finalAttrs: {
-    inherit src;
+    inherit patch;
 
     pname = "vscode-js-debug";
     version = "v1.100.0";
@@ -59,6 +64,10 @@ let
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     dontNpmBuild = true;
     makeCacheWritable = true;
+
+    patchPhase = ''
+      cp -r ${patch}/* ./
+    '';
 
     nativeBuildInputs = with pkgs; [
       pkg-config
