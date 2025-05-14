@@ -52,10 +52,9 @@ let
   };
 
   nodePackage = buildNpmPackage (finalAttrs: {
-    inherit patch;
-
     pname = "vscode-js-debug";
     version = "v1.100.0";
+    src = srcOriginal;
 
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
