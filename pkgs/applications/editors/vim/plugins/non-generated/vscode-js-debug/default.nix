@@ -36,6 +36,8 @@ let
       mv package-temp.json package.json
 
       cat package.json
+
+      npm config set strict-ssl false
       npm i --package-lock-only
     '';
   };
