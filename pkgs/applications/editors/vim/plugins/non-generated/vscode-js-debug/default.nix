@@ -30,6 +30,7 @@ let
       export NIX_STORE_DIR=$HOME/nix/store
       export NIX_STATE_DIR=$HOME/nix/var/nix
       export NIX_LOG_DIR=$HOME/nix/var/log/nix
+      export npm_config_strict_ssl="false"
 
       echo "adding dependencies"
       jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64-glibc": "^0.49.1" }' package.json > package-temp.json
@@ -41,7 +42,6 @@ let
 
       cat package.json
 
-      npm config set strict-ssl false
       npm i --package-lock-only
     '';
   };
