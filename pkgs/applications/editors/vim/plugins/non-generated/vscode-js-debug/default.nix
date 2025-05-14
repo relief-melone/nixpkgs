@@ -65,6 +65,7 @@ let
     makeCacheWritable = true;
 
     patchPhase = ''
+      echo copiing patch...
       cp -r ${patch}/* ./
     '';
 
