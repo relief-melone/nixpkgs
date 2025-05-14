@@ -32,7 +32,7 @@ let
       export NIX_STATE_DIR=$HOME/nix/var/nix
       export NIX_LOG_DIR=$HOME/nix/var/log/nix
       export npm_config_strict_ssl="false"
-      export npm_cache=$TMPDIR/.npm
+      export npm_config_cache=$TMPDIR/.npm
 
       echo "adding dependencies"
       jq '.dependencies += { "picomatch": "^4.0.2", "@esbuild/linux-x64": "0.25.3" }' package.json > package-temp.json
