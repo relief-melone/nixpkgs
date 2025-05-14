@@ -114,6 +114,7 @@ vimUtils.buildVimPlugin {
   nativeBuildInputs = [ nodejs ];
 
   buildPhase = ''
+    ls ${nodePackage}/
     ln -s ${nodePackage}/lib/node_modules ./node_modules
 
     export PATH="${nodePackage}/bin:$PATH"
