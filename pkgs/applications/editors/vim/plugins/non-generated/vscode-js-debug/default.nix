@@ -20,7 +20,6 @@ let
       sha256 = "sha256-y3N54lOTI9IdRv2WgZd1e7ntUHh/qd9ybIi7Copd/wA=";
     };
 
-    outputHashMode = "flat";
     outputHashAlgo = "sha256";
     outputHash = lib.fakeSha256;
     makeCacheWritable = true;
@@ -28,9 +27,6 @@ let
     buildInputs = with pkgs; [ jq nodejs];
 
     buildPhase = ''
-      export NIX_STORE_DIR=$HOME/nix/store
-      export NIX_STATE_DIR=$HOME/nix/var/nix
-      export NIX_LOG_DIR=$HOME/nix/var/log/nix
       export npm_config_strict_ssl="false"
       export npm_config_cache=$TMPDIR/.npm
 
