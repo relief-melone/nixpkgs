@@ -10,6 +10,13 @@
 let
 
   nodejs = nodejs_20;
+  package_patch = {
+    "picomatch" = "^4.0.2";
+    "vsce" = "2.7.0";
+    "merge2" = "1.4.1";
+    "@esbuild/linux-x64" = "0.25.3";
+    "@dprint/linux-x64-glibc" = "0.49.1";
+  };
 
   srcOriginal = fetchFromGitHub {
     owner = "microsoft";
@@ -36,14 +43,9 @@ let
 
     buildPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += {
-        "picomatch": "^4.0.2",
-        "@esbuild/linux-x64": "0.25.3",
-        "@dprint/linux-x64-glibc": "0.49.1",
-        "vsce": "2.7.0",
-        "merge2": "1.4.1"
-      }' package.json > package-temp.json
+      jq '.dependencies += ${builtins.toJSON package_patch}' package.json > package-temp.json
       mv package-temp.json package.json
+      exit 1
 
       echo "removing scripts"
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
