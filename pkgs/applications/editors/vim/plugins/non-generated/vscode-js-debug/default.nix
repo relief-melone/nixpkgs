@@ -32,6 +32,8 @@ let
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
+    outputHash = lib.fakeSha256;
+
     makeCacheWritable = true;
 
     buildInputs = with pkgs; [ jq nodejs];
