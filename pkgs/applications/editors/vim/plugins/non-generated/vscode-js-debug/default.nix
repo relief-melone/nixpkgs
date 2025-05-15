@@ -68,8 +68,9 @@ let
       export npm_config_cache=$TMPDIR/.npm
     '';
 
-    preInstallPhase = ''
+    buildPhase = ''
       echo EXITING before install
+      env
 
       exit 1
     '';
@@ -77,7 +78,7 @@ let
     patchPhase = ''
       echo copig patch...
       cp -r ${patch}/* ./
-      expit 1
+      exit 1
     '';
 
     nativeBuildInputs = with pkgs; [
