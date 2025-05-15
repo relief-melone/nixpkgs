@@ -5,7 +5,8 @@
   fetchFromGitHub,
   vimUtils,
   lib,
-  system
+  system,
+  importNpmLock
 }:
 let
 
@@ -88,6 +89,10 @@ let
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmDepsHash = "sha256-4SweyCohiTAMhGFwqmtQtmyic3/34azMTou6vpM2Bqo=";
 
+    npmDeps = importNpmLock {
+      npmRoot = "${patch}/";
+    };
+
     dontNpmBuild = true;
     makeCacheWritable = true;
 
@@ -101,17 +106,9 @@ let
       cp ${patch}/package-lock.json ./
     '';
 
-    buildPhase = ''
-      echo EXITING before install
-      echo "environment"
-      env
-
-      echo "package.json"
-      cat ./package.json
-    '';
-
     installPhase = ''
       cat ./package-lock.json
+      ls ./node_modules
     '';
 
     nativeBuildInputs = with pkgs; [
