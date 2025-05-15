@@ -52,7 +52,7 @@ let
   };
 
   nodePackage = buildNpmPackage (finalAttrs: {
-    pname = "vscode-js-debug";
+    pname = "vscode-js-debug-npm";
     version = "v1.100.0";
     src = srcOriginal;
 
