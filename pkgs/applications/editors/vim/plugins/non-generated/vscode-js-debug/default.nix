@@ -27,7 +27,8 @@ let
     "aarch64-linux" = {
 
     };
-    x86
+    "x86_64-darwin" = {};
+    "aarch64-darwin" = {};
   };
 
   srcOriginal = fetchFromGitHub {
