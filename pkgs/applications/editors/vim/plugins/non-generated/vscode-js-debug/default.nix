@@ -25,6 +25,7 @@ let
       "@dprint/linux-x64-glibc" = "0.49.1";
     };
     "aarch64-linux" = {
+      "@dprint/linux-arm64-glibc" = "0.49.1";
 
     };
     "x86_64-darwin" = {};
@@ -58,7 +59,7 @@ let
 
     buildPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${currentSystem} )}' package.json > package-temp.json
+      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${system} )}' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
