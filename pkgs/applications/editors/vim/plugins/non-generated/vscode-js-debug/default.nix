@@ -72,8 +72,7 @@ let
       mv package-temp.json package.json
 
       npm i --package-lock-only
-      ls
-      mkdir $out
+
       cp ./package.json $out/
       cp ./package-lock.json $out/
     '';
@@ -99,17 +98,6 @@ let
     env = {
       npm_config_cache= "$TMPDIR/.npm";
     };
-
-    patchPhase = ''
-      echo copying patch...
-      cp ${patch}/package.json ./
-      cp ${patch}/package-lock.json ./
-    '';
-
-    installPhase = ''
-      cat ./package-lock.json
-      ls ./node_modules
-    '';
 
     nativeBuildInputs = with pkgs; [
       pkg-config
