@@ -68,8 +68,14 @@ let
       export npm_config_cache=$TMPDIR/.npm
     '';
 
+    preInstallPhase = ''
+      echo EXITING before install
+
+      exit 1
+    '';
+
     patchPhase = ''
-      echo copiing patch...
+      echo copiig patch...
       cp -r ${patch}/* ./
     '';
 
