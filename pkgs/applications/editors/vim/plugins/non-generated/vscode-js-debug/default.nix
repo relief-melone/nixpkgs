@@ -70,15 +70,19 @@ let
 
     buildPhase = ''
       echo EXITING before install
+      echo "environment"
       env
 
+      echo "package.json"
+      cat ./package.json
+
+      echo exiting to stop
       exit 1
     '';
 
     patchPhase = ''
       echo copig patch...
       cp -r ${patch}/* ./
-      exit 1
     '';
 
     nativeBuildInputs = with pkgs; [
