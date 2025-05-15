@@ -86,9 +86,16 @@ let
     '';
 
     patchPhase = ''
-      echo copig patch...
+      echo copiing patch...
       cp -r ${patch}/* ./
     '';
+
+    installPhase = ''
+      ls
+      cat ./package.json
+    '';
+
+
 
     nativeBuildInputs = with pkgs; [
       pkg-config
