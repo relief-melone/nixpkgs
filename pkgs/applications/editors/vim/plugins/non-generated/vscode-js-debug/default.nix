@@ -30,10 +30,12 @@ let
 
     buildInputs = with pkgs; [ jq nodejs];
 
-    buildPhase = ''
-      export npm_config_strict_ssl="false"
-      export npm_config_cache=$TMPDIR/.npm
+    env = {
+      npm_config_cache = "$TMPDIR/.npm";
+      npm_config_strict_ssl = "false";
+    };
 
+    buildPhase = ''
       echo "adding dependencies"
       jq '.dependencies += {
         "picomatch": "^4.0.2",
@@ -81,9 +83,6 @@ let
 
       echo "package.json"
       cat ./package.json
-
-      echo exiting to stop
-      exit 1
     '';
 
     patchPhase = ''
