@@ -95,6 +95,12 @@ let
       npm_config_cache= "$TMPDIR/.npm";
     };
 
+    patchPhase = ''
+      echo copying patch...
+      cp ${patch}/package.json ./
+      cp ${patch}/package-lock.json ./
+    '';
+
     buildPhase = ''
       echo EXITING before install
       echo "environment"
@@ -104,12 +110,9 @@ let
       cat ./package.json
     '';
 
-    patchPhase = ''
-      echo copying patch...
-      cp ${patch}/package.json ./
-      cp ${patch}/package-lock.json ./
+    installPhase = ''
+      cat ./package-lock.json
     '';
-
 
     nativeBuildInputs = with pkgs; [
       pkg-config
