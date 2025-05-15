@@ -86,6 +86,7 @@ let
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
+    npmDepsHash = lib.fakeHash;
 
     npmDeps = importNpmLock {
       npmRoot = "${patch}/";
