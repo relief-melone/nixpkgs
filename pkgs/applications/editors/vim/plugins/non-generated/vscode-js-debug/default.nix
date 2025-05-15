@@ -50,9 +50,9 @@ let
       npm_config_strict_ssl = "false";
     };
 
-    buildPhase = with builtins; ''
+    buildPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += ${toJSON (package_patch // specific_patches.${currentSystem} )}' package.json > package-temp.json
+      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${builtins.currentSystem} )}' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
