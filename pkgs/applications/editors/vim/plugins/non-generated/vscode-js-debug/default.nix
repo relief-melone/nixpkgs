@@ -64,6 +64,10 @@ let
     dontNpmBuild = true;
     makeCacheWritable = true;
 
+    shellHook = ''
+      export npm_config_cache=$TMPDIR/.npm
+    '';
+
     patchPhase = ''
       echo copiing patch...
       cp -r ${patch}/* ./
