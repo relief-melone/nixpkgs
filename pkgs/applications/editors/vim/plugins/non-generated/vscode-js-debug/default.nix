@@ -119,6 +119,7 @@ let
 
     patchPhase = ''
       ls ${patch}/
+      cat ./package-lock.json
       exit 1
       cp ${patch}/package.json ./package.json
       cp ${patch}/package-lock.json ./package-lock.json
