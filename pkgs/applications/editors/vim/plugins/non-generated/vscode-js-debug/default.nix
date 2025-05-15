@@ -78,65 +78,63 @@ let
     '';
   };
 
-  nodePackage = buildNpmPackage (finalAttrs: {
-    pname = "vscode-js-debug-npm";
-    version = "v1.100.0";
-    src = srcOriginal;
+  #nodePackage = buildNpmPackage (finalAttrs: {
+  #  pname = "vscode-js-debug-npm";
+  #  version = "v1.100.0";
+  #  src = srcOriginal;
 
-    npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
-    npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
-    npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
-    npmDepsHash = lib.fakeHash;
+  #  npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
+  #  npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
+  #  npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
+  #  npmDepsHash = lib.fakeHash;
 
-    npmDeps = importNpmLock {
-      package = lib.importJSON "${patch}/package.json";
-      packageLock = lib.importJSON "${patch}/package-lock.json";
-    };
+  #  npmDeps = importNpmLock {
+  #    package = lib.importJSON "${patch}/package.json";
+  #    packageLock = lib.importJSON "${patch}/package-lock.json";
+  #  };
 
-    dontNpmBuild = true;
-    makeCacheWritable = true;
+  #  dontNpmBuild = true;
+  #  makeCacheWritable = true;
 
-    env = {
-      npm_config_cache= "$HOME/.npm";
-    };
+  #  env = {
+  #    npm_config_cache= "$HOME/.npm";
+  #  };
 
-    nativeBuildInputs = with pkgs; [
-      pkg-config
-      libsecret
-      gcc
-      node-gyp
-      jq
-    ];
+  #  nativeBuildInputs = with pkgs; [
+  #    pkg-config
+  #    libsecret
+  #    gcc
+  #    node-gyp
+  #    jq
+  #  ];
 
-    buildInputs = with pkgs; [
-      pkg-config
-      libsecret
-      gcc
-      node-gyp
-      jq
-    ];
+  #  buildInputs = with pkgs; [
+  #    pkg-config
+  #    libsecret
+  #    gcc
+  #    node-gyp
+  #    jq
+  #  ];
 
-    NODE_OPTIONS = "--openssl-legacy-provider";
+  #  NODE_OPTIONS = "--openssl-legacy-provider";
 
-    patchPhase = ''
-      echo listing patch contents...
-      ls ${patch}/
-      echo copying files from patches...
-      cp ${patch}/package.json ./package.json
-      cp ${patch}/package-lock.json ./package-lock.json
-    '';
-  });
+  #  patchPhase = ''
+  #    echo listing patch contents...
+  #    ls ${patch}/
+  #    echo copying files from patches...
+  #    cp ${patch}/package.json ./package.json
+  #    cp ${patch}/package-lock.json ./package-lock.json
+  #  '';
+  #});
 
   # def = import ./dependencies/default.nix;
 
   # nodePkgs = def { inherit system nodejs pkgs; };
   # nodeDependencies = ( nodePkgs // { }).nodeDependencies;
-
+  vscode-js-debug = pkgs.vscode-js-debug;
 in
 vimUtils.buildVimPlugin {
-  inherit nodePackage;
-
-  src = nodePackage;
+  src = pkgs.vscode-js-debug;
 
   pname = "vscode-js-debug";
   version = "v1.100.0";
@@ -145,14 +143,14 @@ vimUtils.buildVimPlugin {
 
   buildPhase = ''
     echo "----nodePackages"
-    ls ${nodePackage}/
+    ls ${vscode-js-debug}/
     echo "----linking nodeModules..."
-    ln -s ${nodePackage}/lib/node_modules ./node_modules
+    ln -s ${vscode-js-debug}/lib/node_modules ./node_modules
     echo "----node_modules contents"
     ls ./node_modules
 
     echo "setting env_vars..."
-    export PATH="${nodePackage}/bin:$PATH"
+    export PATH="${vscode-js-debug}/bin:$PATH"
     export XDG_CACHE_HOME=$(pwd)/node-gyp-cache
 
     echo "----package.json"
