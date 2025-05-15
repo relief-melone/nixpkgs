@@ -50,7 +50,7 @@ let
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = lib.fakeSha256;
+    outputHash = "sha256-ciln0SMeHcOWrJwvMhQclp/6W+XIvSFSneLVrE9q2vE=";
 
     makeCacheWritable = true;
 
