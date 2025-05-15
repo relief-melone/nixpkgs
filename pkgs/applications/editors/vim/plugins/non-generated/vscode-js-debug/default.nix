@@ -64,9 +64,9 @@ let
     dontNpmBuild = true;
     makeCacheWritable = true;
 
-    shellHook = ''
-      export npm_config_cache=$TMPDIR/.npm
-    '';
+    env = {
+      npm_config_cache= "$TMPDIR/.npm"
+    };
 
     buildPhase = ''
       echo EXITING before install
