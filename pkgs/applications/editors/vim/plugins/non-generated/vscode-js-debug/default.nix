@@ -47,15 +47,12 @@ let
       echo "adding dependencies"
       jq '.dependencies += ${builtins.toJSON package_patch}' package.json > package-temp.json
       mv package-temp.json package.json
-      cat package.json
-      exit 1
 
       echo "removing scripts"
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
       mv package-temp.json package.json
 
       cat package.json
-
       npm i --package-lock-only
 
       ls
