@@ -25,7 +25,6 @@ let
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-SWTb483xxqowqgmuO5RzKTcfaF3wI15kIvAFN0CrSH8=";
     makeCacheWritable = true;
 
     buildInputs = with pkgs; [ jq nodejs];
@@ -71,6 +70,7 @@ let
     npmPackFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
     npmInstallFlags = [ "--legacy-peer-deps" "--ignore-scripts" ];
     npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
+    npmDepsHash = "sha256-4SweyCohiTAMhGFwqmtQtmyic3/34azMTou6vpM2Bqo=";
 
     dontNpmBuild = true;
     makeCacheWritable = true;
