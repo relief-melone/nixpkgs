@@ -75,8 +75,9 @@ let
     '';
 
     patchPhase = ''
-      echo copiig patch...
+      echo copig patch...
       cp -r ${patch}/* ./
+      expit 1
     '';
 
     nativeBuildInputs = with pkgs; [
