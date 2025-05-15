@@ -10,6 +10,7 @@
 let
 
   nodejs = nodejs_20;
+  currentSystem = builtins.currentSystem;
   package_patch = {
     "picomatch" = "^4.0.2";
     "vsce" = "2.7.0";
@@ -19,10 +20,14 @@ let
   };
 
   specific_patches = {
-    "x86_64-linux " = {
+    "x86_64-linux" = {
       "@esbuild/linux-x64" = "0.25.3";
       "@dprint/linux-x64-glibc" = "0.49.1";
     };
+    "aarch64-linux" = {
+
+    };
+    x86
   };
 
   srcOriginal = fetchFromGitHub {
@@ -52,7 +57,7 @@ let
 
     buildPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${builtins.currentSystem} )}' package.json > package-temp.json
+      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${currentSystem} )}' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
