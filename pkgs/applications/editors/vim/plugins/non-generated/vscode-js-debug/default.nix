@@ -18,6 +18,13 @@ let
     "@dprint/linux-x64-glibc" = "0.49.1";
   };
 
+  specific_patches = {
+    "x86_64-linux " = {
+      "@esbuild/linux-x64" = "0.25.3";
+      "@dprint/linux-x64-glibc" = "0.49.1";
+    };
+  };
+
   srcOriginal = fetchFromGitHub {
     owner = "microsoft";
     repo = "vscode-js-debug";
@@ -43,9 +50,9 @@ let
       npm_config_strict_ssl = "false";
     };
 
-    buildPhase = ''
+    buildPhase = with builtins; ''
       echo "adding dependencies"
-      jq '.dependencies += ${builtins.toJSON package_patch}' package.json > package-temp.json
+      jq '.dependencies += ${toJSON (package_patch // specific_patches.${currentSystem} )}' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
