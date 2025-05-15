@@ -107,7 +107,7 @@ let
     patchPhase = ''
       echo copying patch...
       cp ${patch}/package.json ./
-      sp ${patch}/package-lock.json ./
+      cp ${patch}/package-lock.json ./
     '';
 
 
