@@ -145,7 +145,7 @@ vimUtils.buildVimPlugin {
   ];
 
   buildPhase = ''
-    tree ${vscode-js-debug}
+    tree -a ${vscode-js-debug}
     mkdir $out
     cp ${vscode-js-debug}/dist $out
   '';
