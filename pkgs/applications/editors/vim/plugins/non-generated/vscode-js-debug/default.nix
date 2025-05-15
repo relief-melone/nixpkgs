@@ -118,8 +118,10 @@ let
     NODE_OPTIONS = "--openssl-legacy-provider";
 
     patchPhase = ''
-      cp ${patch}/package.json ./
-      cp ${patch}/package-lock.json ./
+      ls ${patch}/
+      exit 1
+      cp ${patch}/package.json ./package.json
+      cp ${patch}/package-lock.json ./package-lock.json
     '';
   });
 
