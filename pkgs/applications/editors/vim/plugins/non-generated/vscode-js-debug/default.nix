@@ -109,18 +109,6 @@ let
       cp -r ${patch}/* ./
     '';
 
-    installPhase = ''
-      mkdir $out
-      ls
-      cat ./package.json
-
-      echo "package-lock.json"
-      cat ./package-lock.json
-
-      cp ./package.json $out/
-    '';
-
-
 
     nativeBuildInputs = with pkgs; [
       pkg-config
