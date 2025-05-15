@@ -89,7 +89,8 @@ let
     npmDepsHash = lib.fakeHash;
 
     npmDeps = importNpmLock {
-      npmRoot = "${patch}/";
+      package = lib.importJSON "${patch}/package.json";
+      packageLock = lib.importJSON "${patch}/package-lock.json";
     };
 
     dontNpmBuild = true;
@@ -118,9 +119,9 @@ let
     NODE_OPTIONS = "--openssl-legacy-provider";
 
     patchPhase = ''
+      echo listing patch contents...
       ls ${patch}/
-      cat ./package-lock.json
-      exit 1
+      echo copying files from patches...
       cp ${patch}/package.json ./package.json
       cp ${patch}/package-lock.json ./package-lock.json
     '';
