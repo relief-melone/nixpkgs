@@ -94,7 +94,6 @@ let
       mkdir $out
       ls
       cat ./package.json
-      jq ./package.json
 
       echo "package-lock.json"
       cat ./package-lock.json
