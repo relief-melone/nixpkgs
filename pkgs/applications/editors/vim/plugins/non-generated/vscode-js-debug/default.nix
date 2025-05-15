@@ -146,6 +146,6 @@ vimUtils.buildVimPlugin {
 
   buildPhase = ''
     mkdir $out
-    cp ${vscode-js-debug}/bin $out/
+    cp -r ${vscode-js-debug}/bin $out/
   '';
 }
