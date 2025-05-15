@@ -10,26 +10,30 @@
 let
 
   nodejs = nodejs_20;
-  currentSystem = builtins.currentSystem;
-  package_patch = {
+  general_patches = {
     "picomatch" = "^4.0.2";
     "vsce" = "2.7.0";
     "merge2" = "1.4.1";
-    "@esbuild/linux-x64" = "0.25.3";
-    "@dprint/linux-x64-glibc" = "0.49.1";
   };
 
   specific_patches = {
     "x86_64-linux" = {
-      "@esbuild/linux-x64" = "0.25.3";
       "@dprint/linux-x64-glibc" = "0.49.1";
+      "@esbuild/linux-x64" = "0.25.3";
     };
     "aarch64-linux" = {
       "@dprint/linux-arm64-glibc" = "0.49.1";
+      "@esbuild/linux-arm" = "0.25.3";
 
     };
-    "x86_64-darwin" = {};
-    "aarch64-darwin" = {};
+    "x86_64-darwin" = {
+      "@dprint/darwin-x64" = "0.49.1";
+      "@esbuild/darwin-x64" = "0.25.3";
+    };
+    "aarch64-darwin" = {
+      "@dprint/darwin-arm64" = "0.49.1";
+      "@esbuild/darwin-arm64" = "0.25.3";
+    };
   };
 
   srcOriginal = fetchFromGitHub {
@@ -59,19 +63,15 @@ let
 
     buildPhase = ''
       echo "adding dependencies"
-      jq '.dependencies += ${builtins.toJSON (package_patch // specific_patches.${system} )}' package.json > package-temp.json
+      jq '.dependencies += ${builtins.toJSON (general_patches // specific_patches.${system} )}' package.json > package-temp.json
       mv package-temp.json package.json
 
       echo "removing scripts"
       jq 'del(.scripts.prepare) | del(.scripts.postinstall)' package.json > package-temp.json
       mv package-temp.json package.json
 
-      cat package.json
       npm i --package-lock-only
-
       ls
-      cat package-lock.json
-
       mkdir $out
       cp ./package.json $out/
       cp ./package-lock.json $out/
