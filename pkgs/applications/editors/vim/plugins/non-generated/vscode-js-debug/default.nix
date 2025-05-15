@@ -97,7 +97,7 @@ let
     makeCacheWritable = true;
 
     env = {
-      npm_config_cache= "$TMPDIR/.npm";
+      npm_config_cache= "$HOME/.npm";
     };
 
     nativeBuildInputs = with pkgs; [
