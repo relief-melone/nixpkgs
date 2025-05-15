@@ -105,8 +105,9 @@ let
     '';
 
     patchPhase = ''
-      echo copiing patch...
-      cp -r ${patch}/* ./
+      echo copying patch...
+      cp ${patch}/package.json ./
+      sp ${patch}/package-lock.json ./
     '';
 
 
@@ -127,6 +128,8 @@ let
     ];
 
     NODE_OPTIONS = "--openssl-legacy-provider";
+
+
 
     postInstall = ''
       echo "Folder contents"
