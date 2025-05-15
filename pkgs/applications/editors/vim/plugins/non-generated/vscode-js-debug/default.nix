@@ -161,6 +161,7 @@ vimUtils.buildVimPlugin {
 
     ls ./node_modules
     cat ./package.json
+    cat ./package-lock.json
 
     npx gulp dapDebugServer
 
