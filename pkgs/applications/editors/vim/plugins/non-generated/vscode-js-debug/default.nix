@@ -142,7 +142,7 @@ vimUtils.buildVimPlugin {
   nativeBuildInputs = [ nodejs ];
 
   buildPhase = ''
-    ls ${vscode-js-debug}
+    ls ${vscode-js-debug}/lib
     mkdir $out
     cp ${vscode-js-debug}/dist $out
   '';
