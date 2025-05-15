@@ -153,18 +153,26 @@ vimUtils.buildVimPlugin {
   nativeBuildInputs = [ nodejs ];
 
   buildPhase = ''
+    echo "----nodePackages"
     ls ${nodePackage}/
+    echo "----linking nodeModules..."
     ln -s ${nodePackage}/lib/node_modules ./node_modules
+    echo "----node_modules contents"
+    ls ./node_modules
 
+    echo "setting env_vars..."
     export PATH="${nodePackage}/bin:$PATH"
     export XDG_CACHE_HOME=$(pwd)/node-gyp-cache
 
-    ls ./node_modules
+    echo "----package.json"
     cat ./package.json
+    echo "----package-lock.json"
     cat ./package-lock.json
 
+    echo "building dapDebugServer..."
     npx gulp dapDebugServer
 
+    echo "copying dist to out..."
     mv ./dist out
   '';
 }
