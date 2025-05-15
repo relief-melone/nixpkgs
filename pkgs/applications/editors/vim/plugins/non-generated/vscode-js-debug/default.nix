@@ -54,8 +54,12 @@ let
 
       npm i --package-lock-only
 
+      ls
+      cat package-lock.json
+
       mkdir $out
-      cp -r ./package.json ./package-lock.json $out/
+      cp ./package.json $out/
+      cp ./package-lock.json $out/
     '';
   };
 
