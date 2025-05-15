@@ -170,7 +170,7 @@ vimUtils.buildVimPlugin {
     cat ./package-lock.json
 
     echo "building dapDebugServer..."
-    npx gulp dapDebugServer
+    npx gulp dapDebugServer -- --verbose
 
     echo "copying dist to out..."
     mv ./dist out
