@@ -117,17 +117,10 @@ let
 
     NODE_OPTIONS = "--openssl-legacy-provider";
 
-
-
-    postInstall = ''
-      echo "Folder contents"
-      ls
-
-      echo "node_modules content"
-      ls node_modules
+    patchPhase = ''
+      cp ${patch}/package.json ./
+      cp ${patch}/package-lock.json ./
     '';
-
-
   });
 
   # def = import ./dependencies/default.nix;
