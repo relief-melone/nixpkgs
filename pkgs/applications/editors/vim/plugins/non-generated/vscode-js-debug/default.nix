@@ -139,10 +139,13 @@ vimUtils.buildVimPlugin {
   pname = "vscode-js-debug";
   version = "v1.100.0";
 
-  nativeBuildInputs = [ nodejs ];
+  nativeBuildInputs = with pkgs; [
+    nodejs
+    tree
+  ];
 
   buildPhase = ''
-    ls ${vscode-js-debug}/lib
+    tree ${vscode-js-debug}
     mkdir $out
     cp ${vscode-js-debug}/dist $out
   '';
