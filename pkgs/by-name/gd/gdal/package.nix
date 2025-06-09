@@ -3,6 +3,7 @@
   stdenv,
   callPackage,
   fetchFromGitHub,
+  fetchpatch,
 
   useMinimalFeatures ? false,
   useArmadillo ? (!useMinimalFeatures),
@@ -91,6 +92,18 @@ stdenv.mkDerivation (finalAttrs: {
     tag = "v${finalAttrs.version}";
     hash = "sha256-8HcbA9Cj2i6DuqcJGiwqd6GkqbJP9oLdmA34g7kc/ng=";
   };
+
+  patches = [
+    # https://github.com/OSGeo/gdal/issues/12511
+    (fetchpatch {
+      url = "https://github.com/OSGeo/gdal/commit/1dd320b086606958fe970457a0640bdc4c4d494a.patch";
+      hash = "sha256-SXlNjgR4q7i3PrFfh/wzEFMrSGHQuB+ecXbGJgsROe0=";
+    })
+    (fetchpatch {
+      url = "https://github.com/OSGeo/gdal/commit/6da26aec591656f97fd882b07d37c21aabd06373.patch";
+      hash = "sha256-s70j/S9YKGRqxwrabsV3ePeGSsnDh/ouGLtLEm+z0lU=";
+    })
+  ];
 
   nativeBuildInputs =
     [
@@ -286,6 +299,9 @@ stdenv.mkDerivation (finalAttrs: {
       "test_vsioss_6"
       # flaky?
       "test_tiledb_read_arbitrary_array"
+      # tests for magic numbers, seem to change with different poppler versions,
+      # and architectures
+      "test_pdf_extra_rasters"
     ]
     ++ lib.optionals (!stdenv.hostPlatform.isx86_64) [
       # likely precision-related expecting x87 behaviour

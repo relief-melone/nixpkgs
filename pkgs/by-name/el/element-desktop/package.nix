@@ -123,7 +123,10 @@ stdenv.mkDerivation (
         "Chat"
       ];
       startupWMClass = "Element";
-      mimeTypes = [ "x-scheme-handler/element" ];
+      mimeTypes = [
+        "x-scheme-handler/element"
+        "x-scheme-handler/io.element.desktop"
+      ];
     };
 
     postFixup = lib.optionalString stdenv.hostPlatform.isDarwin ''
@@ -147,12 +150,12 @@ stdenv.mkDerivation (
     };
 
     meta = with lib; {
-      description = "A feature-rich client for Matrix.org";
+      description = "Feature-rich client for Matrix.org";
       homepage = "https://element.io/";
       changelog = "https://github.com/element-hq/element-desktop/blob/v${finalAttrs.version}/CHANGELOG.md";
       license = licenses.asl20;
       teams = [ teams.matrix ];
-      inherit (electron.meta) platforms;
+      platforms = electron.meta.platforms ++ lib.platforms.darwin;
       mainProgram = "element-desktop";
     };
   }

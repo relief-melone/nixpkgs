@@ -8,17 +8,17 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "framework-tool";
-  version = "0.4.0";
+  version = "0.4.3";
 
   src = fetchFromGitHub {
     owner = "FrameworkComputer";
     repo = "framework-system";
     tag = "v${version}";
-    hash = "sha256-JPIpaAfXraqU6YM31bLImeJUCD3/O+PLcaZBxUjDqlM=";
+    hash = "sha256-gO7ieyVQzK3BkNsy451WNtrx51jlzd6vhwJX8RDoj/o=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-Kf3DXEDpCbbixUjeyBi1xkR32sW2uuasxqeWeq/X2Xk=";
+  cargoHash = "sha256-fgDZgWQGQEN2dLJjghngqeOLDX+0joSiI6OigGC57Hc=";
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs = [ udev ];
@@ -32,6 +32,7 @@ rustPlatform.buildRustPackage rec {
       nickcao
       leona
       kloenk
+      johnazoidberg
     ];
     mainProgram = "framework_tool";
   };

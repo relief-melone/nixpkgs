@@ -88,6 +88,8 @@ let
 
         benchmark = callPackage ../development/ocaml-modules/benchmark { };
 
+        bencode = callPackage ../development/ocaml-modules/bencode { };
+
         bheap = callPackage ../development/ocaml-modules/bheap { };
 
         bigarray-compat = callPackage ../development/ocaml-modules/bigarray-compat { };
@@ -201,6 +203,8 @@ let
         carton-lwt = callPackage ../development/ocaml-modules/carton/lwt.nix {
           git-binary = pkgs.git;
         };
+
+        cbor = callPackage ../development/ocaml-modules/cbor { };
 
         cfstream = callPackage ../development/ocaml-modules/cfstream { };
 
@@ -325,6 +329,26 @@ let
         dates_calc = callPackage ../development/ocaml-modules/dates_calc { };
 
         dbf = callPackage ../development/ocaml-modules/dbf { };
+
+        decoders = callPackage ../development/ocaml-modules/decoders { };
+
+        decoders-bencode = callPackage ../development/ocaml-modules/decoders-bencode { };
+
+        decoders-cbor = callPackage ../development/ocaml-modules/decoders-cbor { };
+
+        decoders-ezjsonm = callPackage ../development/ocaml-modules/decoders-ezjsonm { };
+
+        decoders-ezxmlm = callPackage ../development/ocaml-modules/decoders-ezxmlm { };
+
+        decoders-jsonaf = callPackage ../development/ocaml-modules/decoders-jsonaf { };
+
+        decoders-jsonm = callPackage ../development/ocaml-modules/decoders-jsonm { };
+
+        decoders-msgpck = callPackage ../development/ocaml-modules/decoders-msgpck { };
+
+        decoders-sexplib = callPackage ../development/ocaml-modules/decoders-sexplib { };
+
+        decoders-yojson = callPackage ../development/ocaml-modules/decoders-yojson { };
 
         decompress = callPackage ../development/ocaml-modules/decompress { };
 
@@ -1147,6 +1171,8 @@ let
 
         lwt-dllist = callPackage ../development/ocaml-modules/lwt-dllist { };
 
+        lwt_eio = callPackage ../development/ocaml-modules/lwt_eio { };
+
         lwt-exit = callPackage ../development/ocaml-modules/lwt-exit { };
 
         lwt_log = callPackage ../development/ocaml-modules/lwt_log { };
@@ -1193,6 +1219,8 @@ let
         mec = callPackage ../development/ocaml-modules/mec { };
 
         melange = callPackage ../development/tools/ocaml/melange { };
+
+        melange-json = callPackage ../development/ocaml-modules/melange-json { };
 
         memprof-limits = callPackage ../development/ocaml-modules/memprof-limits { };
 
@@ -1467,7 +1495,7 @@ let
 
         ocaml-version = callPackage ../development/ocaml-modules/ocaml-version { };
 
-        ocaml-vdom = callPackage ../development/ocaml-modules/ocaml-vdom { };
+        ocaml-vdom = throw "2023-10-09: ocamlPackages.ocaml-vdom was renamed to ocamlPackages.vdom";
 
         ocamlbuild =
           if lib.versionOlder "4.03" ocaml.version then
@@ -2076,6 +2104,8 @@ let
 
         type_id = callPackage ../development/ocaml-modules/type_id { };
 
+        tyre = callPackage ../development/ocaml-modules/tyre { };
+
         tyxml = callPackage ../development/ocaml-modules/tyxml { };
 
         tyxml-lwd = callPackage ../development/ocaml-modules/lwd/tyxml-lwd.nix { };
@@ -2121,6 +2151,8 @@ let
         ### V ###
 
         vchan = callPackage ../development/ocaml-modules/vchan { };
+
+        vdom = callPackage ../development/ocaml-modules/vdom { };
 
         vector = callPackage ../development/ocaml-modules/vector { };
 

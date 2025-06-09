@@ -1,11 +1,9 @@
 {
-  # callPackage-provided arguments
   lib,
+  cudaLib,
   cudaMajorMinorVersion,
-  flags,
+  redistSystem,
   stdenv,
-  # Expected to be passed by the caller
-  mkVersionedPackageName,
   # Builder-specific arguments
   # Short package name (e.g., "cuda_cccl")
   # pname : String
@@ -26,7 +24,7 @@
   # The featureRelease is used to populate meta.platforms (by way of looking at the attribute names), determine the
   # outputs of the package, and provide additional package-specific constraints (e.g., min/max supported CUDA versions,
   # required versions of other packages, etc.).
-  # shimFn :: {package, redistArch} -> AttrSet
+  # shimFn :: {package, redistSystem} -> AttrSet
   shimsFn ? (throw "shimsFn must be provided"),
 }:
 let
@@ -41,10 +39,6 @@ let
   # - Releases: ../modules/${pname}/releases/releases.nix
   # - Package: ../modules/${pname}/releases/package.nix
 
-  # redistArch :: String
-  # Value is `"unsupported"` if the platform is not supported.
-  redistArch = flags.getRedistArch stdenv.hostPlatform.system;
-
   # Check whether a package supports our CUDA version.
   # satisfiesCudaVersion :: Package -> Bool
   satisfiesCudaVersion =
@@ -52,17 +46,25 @@ let
     lib.versionAtLeast cudaMajorMinorVersion package.minCudaVersion
     && lib.versionAtLeast package.maxCudaVersion cudaMajorMinorVersion;
 
-  # Releases for our platform and CUDA version.
-  # See ../modules/${pname}/releases/releases.nix
-  # allPackages :: List Package
-  allPackages = lib.filter satisfiesCudaVersion (
-    evaluatedModules.config.${pname}.releases.${redistArch} or [ ]
-  );
+  # FIXME: do this at the module system level
+  propagatePlatforms = lib.mapAttrs (redistSystem: lib.map (p: { inherit redistSystem; } // p));
+
+  # Releases for all platforms and all CUDA versions.
+  allReleases = propagatePlatforms evaluatedModules.config.${pname}.releases;
+
+  # Releases for all platforms and our CUDA version.
+  allReleases' = lib.mapAttrs (_: lib.filter satisfiesCudaVersion) allReleases;
+
+  # Packages for all platforms and our CUDA versions.
+  allPackages = lib.concatLists (lib.attrValues allReleases');
+
+  packageOlder = p1: p2: lib.versionOlder p1.version p2.version;
+  packageSupportedPlatform = p: p.redistSystem == redistSystem;
 
   # Compute versioned attribute name to be used in this package set
   # Patch version changes should not break the build, so we only use major and minor
   # computeName :: Package -> String
-  computeName = package: mkVersionedPackageName pname package.version;
+  computeName = { version, ... }: cudaLib.mkVersionedName pname (lib.versions.majorMinor version);
 
   # The newest package for each major-minor version, with newest first.
   # newestPackages :: List Package
@@ -77,8 +79,15 @@ let
         newestPackages
         // {
           ${majorMinorVersion} =
-            # Only keep the existing package if it is newer than the one we are considering.
-            if existingPackage != null && lib.versionOlder package.version existingPackage.version then
+            # Only keep the existing package if it is newer than the one we are considering or it is supported on the
+            # current platform and the one we are considering is not.
+            if
+              existingPackage != null
+              && (
+                packageOlder package existingPackage
+                || (!packageSupportedPlatform package && packageSupportedPlatform existingPackage)
+              )
+            then
               existingPackage
             else
               package;
@@ -87,9 +96,8 @@ let
     in
     # Sort the packages by version so the newest is first.
     # NOTE: builtins.sort requires a strict weak ordering, so we must use versionOlder rather than versionAtLeast.
-    lib.sort (p1: p2: lib.versionOlder p2.version p1.version) (
-      lib.attrValues newestForEachMajorMinorVersion
-    );
+    # See https://github.com/NixOS/nixpkgs/commit/9fd753ea84e5035b357a275324e7fd7ccfb1fc77.
+    lib.sort (lib.flip packageOlder) (lib.attrValues newestForEachMajorMinorVersion);
 
   extension =
     final: _:
@@ -99,7 +107,7 @@ let
       buildPackage =
         package:
         let
-          shims = final.callPackage shimsFn { inherit package redistArch; };
+          shims = final.callPackage shimsFn { inherit package redistSystem; };
           name = computeName package;
           drv = final.callPackage ./manifest.nix {
             inherit pname redistName;

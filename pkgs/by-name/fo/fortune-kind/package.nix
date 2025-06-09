@@ -52,13 +52,13 @@ rustPlatform.buildRustPackage rec {
   postInstall =
     ''
       wrapProgram $out/bin/fortune-kind \
-        --prefix FORTUNE_DIR : "$out/fortunes"
+        --set-default FORTUNE_DIR "$out/fortunes"
     ''
     + lib.optionalString fortuneAlias ''
       ln -s fortune-kind $out/bin/fortune
     '';
 
-  meta = with lib; {
+  meta = {
     description = "Kinder, curated fortune, written in rust";
     longDescription = ''
       Historically, contributions to fortune-mod have had a less-than ideal
@@ -70,9 +70,9 @@ rustPlatform.buildRustPackage rec {
     '';
     homepage = "https://github.com/cafkafk/fortune-kind";
     changelog = "https://github.com/cafkafk/fortune-kind/releases/tag/v${version}";
-    license = licenses.gpl3Only;
+    license = lib.licenses.gpl3Only;
     mainProgram = "fortune-kind";
-    maintainers = with maintainers; [ cafkafk ];
-    platforms = platforms.unix ++ platforms.windows;
+    maintainers = with lib.maintainers; [ cafkafk ];
+    platforms = lib.platforms.unix ++ lib.platforms.windows;
   };
 }
